@@ -1,7 +1,8 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import Optional
-from validator import validator
+
+from pydantic.types import conint
 
 
 class PostBase(BaseModel):
@@ -61,11 +62,4 @@ class TokenData(BaseModel):
 
 class Vote(BaseModel):
     post_id: int
-    dir: int
-
-    @validator('dir')
-    def must_be_one_or_zero(cls, value):
-        if value not in (0, 1):
-            raise ValueError("Must be either 1 or 0")
-        return value
-
+    dir: conint(le=1)
